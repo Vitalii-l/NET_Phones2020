@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using NET_Phones2020.Models;
+using PagedList;
 
 namespace NET_Phones2020.Controllers
 {
@@ -15,10 +16,14 @@ namespace NET_Phones2020.Controllers
         private PhonesEntities db = new PhonesEntities();
 
         // GET: Phones
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            var phones = db.Phones.Include(p => p.Company).OrderBy(p => p.Name);
-            return View(phones.ToList());
+            // var phones = db.Phones.Include(p => p.Company).OrderBy(p => p.Name);
+            // return View(phones.ToList());
+            int pageSize = 3; // Кол-во записей на странице
+            int pageNumber = (page ?? 1);
+            var phones = db.Phones.Include(p => p.Company).OrderBy(p => p.Name).ToList(); // записи
+            return View(phones.ToPagedList(pageNumber, pageSize));
         }
 
         // GET: Phones/Details/5
