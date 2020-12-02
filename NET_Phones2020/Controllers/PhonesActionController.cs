@@ -15,6 +15,7 @@ namespace NET_Phones2020.Controllers
         private PhonesEntities db = new PhonesEntities();
 
         // GET: PhonesAction
+        [Authorize]
         public ActionResult Index()
         {
             var phones = db.Phones.Include(p => p.Company);
@@ -22,6 +23,7 @@ namespace NET_Phones2020.Controllers
         }
 
         // GET: PhonesAction/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +39,7 @@ namespace NET_Phones2020.Controllers
         }
 
         // GET: PhonesAction/Create
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             ViewBag.CompanyId = new SelectList(db.Companies, "Id", "Name");
