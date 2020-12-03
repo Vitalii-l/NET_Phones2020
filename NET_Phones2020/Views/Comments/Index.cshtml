@@ -1,0 +1,105 @@
+﻿@model IEnumerable<NET_Phones2020.Models.Comment>
+
+@{
+    //асинхронное добавление-удаление комментариев
+    AjaxOptions ajaxOptions = new AjaxOptions { UpdateTargetId = "comments-tool" };
+}
+@using (Ajax.BeginForm("Index", new { PhoneId = ViewBag.PhoneId }, ajaxOptions))
+{
+    <div id="comments-tool">
+        <div id="all-comments">
+            <hr />
+            <h3>Comments List</h3>
+            @foreach (var item in Model)//список комментариев по id товара
+            {
+                <div class="phones-comment">
+                    <div class="phones-comment-title">
+                        From: @Html.DisplayFor(modelItem => item.UserName)
+                    </div>
+                    <div class="phones-comment-date">
+                        Date Publish: @item.DatePublish.Value.ToString("dd/MM/yyyy")
+                        <br />
+                        Date Publish: @item.DatePublish
+                    </div>
+                    <div class="phones-comment-body">
+                        @Html.DisplayFor(modelItem => item.Comments)
+                    </div>
+                    @if (Request.IsAuthenticated && User.IsInRole("admin"))
+                    {
+                        //если авторизовался admin
+                        @Html.ActionLink("Delete This Comment", "Delete", new { id = item.Id})
+                    }
+                </div>
+            }
+        </div>
+        <div id="addcomment" class="add-comment-box">
+            @if (Request.IsAuthenticated)
+            {
+                //если авторизовался пользователь - доступно добавить comment
+                @Html.Action("Create", "Comments", new { PhoneId = ViewBag.PhoneId })
+            }
+            else
+            {
+                @Html.ActionLink("Авторизуйтесь для добавления комментариев", "Login", "Account")
+            }
+        </div>
+    </div>
+}
+
+
+
+
+
+
+@*
+        @{
+            ViewBag.Title = "Index";
+        }
+
+    <h2>Index</h2>
+
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comments)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DatePublish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone.Name)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comments)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DatePublish)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone.Name)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+
+    </table>
+*@
