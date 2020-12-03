@@ -15,6 +15,20 @@ namespace NET_Phones2020.Controllers
     {
         private PhonesEntities db = new PhonesEntities();
 
+        [HttpPost]
+        public ActionResult PhoneSearch(string PhoneName)
+        {
+            // список телефонов по условию поиска, сортированы по цене по цбыванию
+            var allPhones = db.Phones.Include(a => a.Company).Where(b => b.Name.Contains(PhoneName)).OrderByDescending(t => t.Price).ToList();
+            if (allPhones.Count <= 0)
+            {
+                return HttpNotFound();
+            }
+            return PartialView(allPhones);
+        }
+        
+        
+        
         // GET: Phones
         public ActionResult Index(int? page)
         {

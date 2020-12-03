@@ -1,0 +1,18 @@
+﻿@model IEnumerable<NET_Phones2020.Models.Phone>
+
+<div id="searchresults">
+    <p>
+        <b>Найдено по запросу @Model.Count() моделей</b>
+    </p>
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>
+                @Html.ActionLink(@item.Name, "Details", new { id = item.Id} ) -
+                @Html.DisplayFor(modelItem => item.Price)
+            </li>
+        }
+
+    </ul>
+
+</div>
